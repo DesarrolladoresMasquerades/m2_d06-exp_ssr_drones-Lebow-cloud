@@ -2,9 +2,14 @@
 <a href="/">Back</a>
 {{#each drones}}
   <h1>
-    <h2>Name of SpanceShip {{name}}</h2>
+    <h2>Name {{name}}</h2>
    Motors {{propellers}}
-  <h1>Speed {{maxSpeed}}</h1> 
+   Speed {{maxSpeed}}
+  <a href="/drones/{{_id}}/edit">Edit Drone</a>
+  <form action="/drones/{{_id}}/delete" method="POST">
+    <button>Delete this Drone</button>
+  </form>
+
   
   </h1>
 {{/each}}

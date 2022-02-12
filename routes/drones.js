@@ -1,9 +1,49 @@
 const express = require('express');
+const Drone = require('../models/Drone.model');
 const router = express.Router();
 
 // require the Drone model here
 const Drones = require("../models/Drone.model") 
 
+
+router.route("/drones/:id/edit")
+
+// Iteration #4: Update the drone
+.get((req,res) => {
+    const id = req.params.id;
+    Drones.findById(id)
+    .then(drone=>{
+      res.render("drones/update-form", drone
+      )})
+      
+    })
+    
+  
+    
+    .post((req, res) => {
+      console.log("Edit from body: ", req.body);
+      
+      const id = req.params.id;
+      
+      const name = req.body.name;
+      const propellers = req.body.propellers;
+    const maxSpeed = req.body.maxSpeed;
+    Drone.findByIdAndUpdate( id, {name,maxSpeed,propellers}, {new: true}) 
+      .then((editedDrone)=>console.log("Edited DB: ", editedDrone))
+        res.redirect("/drones")
+      .catch(err => {console.log("Error: ", err)})
+  })
+ 
+;
+
+router.post('/drones/:id/delete', (req, res, next) => {
+  // Iteration #5: Delete the drone
+  const id = req.params.id;
+  Drones.findByIdAndDelete(id)
+  .then(()=>res.redirect("/drones"))
+  .catch(err =>console.error(err))
+
+});
 
 router.route('/drones/create')
 // Iteration #3: Add a new drone
@@ -36,24 +76,8 @@ router.get('/drones', (req, res, next) => {
 });
 
 
-router.post('/drones/create', (req, res, next) => {
-  // Iteration #3: Add a new drone
-  // ... your code here
-});
 
-router.get('/drones/:id/edit', (req, res, next) => {
-  // Iteration #4: Update the drone
-  // ... your code here
-});
 
-router.post('/drones/:id/edit', (req, res, next) => {
-  // Iteration #4: Update the drone
-  // ... your code here
-});
 
-router.post('/drones/:id/delete', (req, res, next) => {
-  // Iteration #5: Delete the drone
-  // ... your code here
-});
 
 module.exports = router;
